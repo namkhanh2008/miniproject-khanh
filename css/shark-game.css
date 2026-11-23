@@ -1,0 +1,106 @@
+/* =====================================================
+   OCEAN SEAFOOD - FILE: css/shark-game.css
+   Giao dien game "Ca Map Dai Duong" o phong cho
+   ===================================================== */
+
+.shark-shell { max-width: 960px; margin: 0 auto; }
+
+/* ---------- Thanh HUD ---------- */
+.shark-hud {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px;
+  background-color: var(--color-primary-dark);
+  border-radius: var(--radius);
+  color: var(--color-white);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.shark-hud-level, .shark-hud-best { text-align: center; min-width: 60px; }
+.shark-hud-level span:last-child, .shark-hud-best span:last-child {
+  display: block; font-size: 1.4rem; font-weight: 700; color: var(--color-gold-light);
+}
+.shark-hud-label { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.7); }
+
+.shark-hud-bars { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 6px; }
+.shark-bar-row { display: flex; align-items: center; gap: 8px; }
+.shark-bar-icon { font-size: 0.9rem; width: 18px; text-align: center; }
+.shark-bar-track {
+  flex: 1; height: 10px; border-radius: 6px;
+  background-color: rgba(255,255,255,0.15); overflow: hidden;
+}
+.shark-bar-fill { height: 100%; width: 0%; transition: width 0.25s ease; border-radius: 6px; }
+.exp-fill { background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light)); }
+.hp-fill { background: linear-gradient(90deg, #d64545, #ff8a7a); }
+
+/* ---------- Icon ky nang ---------- */
+.shark-skills { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.skill-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 14px;
+  background-color: var(--color-border); color: var(--color-text-light);
+  font-size: 0.78rem; transition: var(--transition);
+}
+.skill-badge.unlocked {
+  background-color: var(--color-gold); color: var(--color-white); font-weight: 600;
+}
+.skill-badge .skill-key {
+  font-size: 0.68rem; padding: 1px 5px; border-radius: 4px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+/* ---------- Khu vuc choi ---------- */
+.shark-ocean {
+  position: relative;
+  height: 480px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 0%, #1d7bb0 0%, #0a4d8c 45%, #04203a 100%);
+  box-shadow: var(--shadow-md), inset 0 0 60px rgba(0,0,0,0.35);
+  cursor: crosshair;
+  touch-action: none;
+}
+#shark-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.game-overlay {
+  position: absolute; inset: 0; z-index: 10;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 12px; padding: 20px;
+  background-color: rgba(4,32,58,0.9); color: var(--color-white);
+}
+.game-overlay h2 { color: var(--color-white); font-size: 1.8rem; }
+.game-overlay p { max-width: 440px; color: rgba(255,255,255,0.85); }
+.game-new-best { color: var(--color-gold-light); font-weight: 700; }
+.game-end-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.game-name-box {
+  background-color: rgba(255,255,255,0.08); border: 1px dashed var(--color-gold);
+  border-radius: 10px; padding: 12px 16px;
+}
+.game-name-box form { display: flex; gap: 8px; margin-top: 8px; }
+.game-name-box input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--color-border); outline: none; }
+
+/* ---------- Chu giai ---------- */
+.shark-legend {
+  margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px;
+  font-size: 0.82rem; color: var(--color-text-light);
+}
+.shark-legend-item { display: flex; align-items: center; gap: 6px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.dot-prey { background-color: #4ea0d9; }
+.dot-danger { background-color: #c94a35; }
+.dot-hazard { background-color: #a06fd9; }
+.dot-bonus { background-color: #e6c65c; }
+
+/* ---------- Bang xep hang ---------- */
+.game-leaderboard {
+  margin-top: 18px; padding: 16px 20px;
+  background-color: var(--color-white); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.game-leaderboard h3 { margin-bottom: 10px; font-size: 1.05rem; }
+.game-leaderboard li { padding: 4px 0; font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .shark-ocean { height: 400px; }
+  .shark-hud { gap: 10px; }
+}

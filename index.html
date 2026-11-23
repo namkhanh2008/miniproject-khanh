@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OCEAN SEAFOOD - Nhà hàng hải sản tươi sống. Tinh hoa đại dương, trọn vị yêu thương.">
+  <title>OCEAN SEAFOOD - Tinh hoa đại dương, trọn vị yêu thương</title>
+
+  <!-- Font chữ từ Google Fonts (không có mạng thì trình duyệt tự dùng font dự phòng) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- File giao diện: thứ tự quan trọng, style.css phải đứng đầu -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Dữ liệu món ăn (đặt ở head, xem giải thích phía trên) -->
+  <script src="js/products.js"></script>
+</head>
+
+<body class="page-home">
+
+  <!-- HEADER: main.js sẽ tự đổ nội dung vào đây -->
+    <!-- Nền "lặn sâu dần" theo cuộn trang: chỉ ở trang chủ, nằm cố định sau mọi nội dung -->
+  <div class="dive-bg" aria-hidden="true">
+    <canvas id="ocean-fx" class="ocean-fx-canvas"></canvas>
+    <div class="dive-bg-layer dive-bg-shallow"></div>
+    <div class="dive-bg-layer dive-bg-mid"></div>
+    <div class="dive-bg-layer dive-bg-deep"></div>
+    <!-- Rong biển đung đưa ở đáy -->
+<div class="seaweed sw-1"></div>
+<div class="seaweed sw-2"></div>
+<div class="seaweed sw-3"></div>
+<div class="seaweed sw-4"></div>
+
+<!-- Ánh sáng lung linh xuyên nước -->
+<div class="dive-caustics"></div>
+
+<!-- Sinh vật phù du trôi -->
+<span class="plankton pl-1"></span>
+<span class="plankton pl-2"></span>
+<span class="plankton pl-3"></span>
+<span class="plankton pl-4"></span>
+<span class="plankton pl-5"></span>
+<span class="plankton pl-6"></span>
+<span class="plankton pl-7"></span>
+<span class="plankton pl-8"></span>
+
+<!-- 6 con cá SVG, mỗi con có đuôi vẫy thật -->
+<div class="dive-fish fish-1">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+<div class="dive-fish fish-2">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+<div class="dive-fish fish-3">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+<div class="dive-fish fish-4">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+<div class="dive-fish fish-5">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+<div class="dive-fish fish-6">
+  <svg viewBox="0 0 60 28"><g class="fish-tail"><path d="M38,14 L58,3 L58,25 Z"/></g><ellipse class="fish-body-shape" cx="22" cy="14" rx="18" ry="9"/><path class="fish-fin" d="M16,6 Q22,-5 28,6 Z"/><circle class="fish-eye" cx="10" cy="11" r="1.7"/></svg>
+</div>
+  </div>
+
+  <!-- Đồng hồ đo độ sâu: hiện bên phải màn hình, chỉ trên máy tính -->
+  <div class="dive-gauge" aria-hidden="true">
+    <div class="dive-gauge-track">
+      <div class="dive-gauge-fill" id="dive-gauge-fill"></div>
+    </div>
+    <div class="dive-gauge-readout">
+      <span id="dive-gauge-text">0m</span>
+      <small id="dive-gauge-zone">Vùng ánh sáng mặt trời</small>
+    </div>
+  </div>
+
+  <div id="site-header"></div>
+  <div id="site-header"></div>
+
+
+  <!-- ===== 1. BANNER CHÍNH ===== -->
+  <section class="hero">
+  <!-- Khung chứa cảnh biển 3D: ocean3d.js sẽ vẽ vào đây -->
+    <div id="ocean3d" class="ocean3d-bg"></div>
+    <div class="container hero-grid">
+       <div class="hero-content">
+        <h1>Hương vị đại dương trong từng món ăn</h1>
+        <p>
+          OCEAN SEAFOOD mang đến những món hải sản tươi sống mỗi ngày,
+          chế biến tinh tế trong không gian sang trọng, ấm cúng
+          dành cho gia đình, bạn bè và du khách.
+        </p>
+        <div class="hero-buttons">
+          <a href="menu.html" class="btn btn-gold btn-glow">Khám phá thực đơn</a>
+          <a href="booking.html" class="btn btn-outline">Đặt bàn ngay</a>
+        </div>
+      </div>
+
+    <!-- Vòng xoay 3D: JavaScript sẽ tạo các ảnh món vào #ring -->
+      <div class="hero-3d">
+        <div class="ring-stage" id="ring-stage">
+          <div class="ring-glow"></div>
+          <canvas class="sphere-lines" id="sphere-lines"></canvas>
+          <div class="ring-wrap" id="ring-wrap">
+            <div class="ring" id="ring"></div>
+          </div>
+        </div>
+        <p class="sphere-hint">Rê hoặc kéo chuột để xoay quả cầu món ăn 3D</p>
+        <div class="ring-dots" id="ring-dots"></div>
+      </div>
+
+    </div>
+  </section>
+ <!-- ===== 2. DANH MỤC MÓN ĂN NỔI BẬT: RẠN SAN HÔ ===== -->
+  <section class="section reef-section">
+    <div class="container">
+      <h2 class="section-title reveal">Danh mục nổi bật</h2>
+      <p class="section-subtitle reveal">Chạm vào một rạn san hô để xem gợi ý món ngay tại đây.</p>
+
+      <!-- Nền cát + rạn san hô: JavaScript tạo từng cụm vào đây -->
+      <div class="reef-bed" id="reef-bed"></div>
+    </div>
+  </section>
+
+  <!-- ===== 3. MÓN ĂN BÁN CHẠY ===== -->
+  <section class="section section-light">
+    <div class="container">
+      <h2 class="section-title reveal">Món ăn bán chạy</h2>
+      <p class="section-subtitle reveal">Những món được thực khách gọi nhiều nhất tại OCEAN SEAFOOD.</p>
+
+      <!-- JavaScript ở cuối trang sẽ tạo các card món ăn vào đây -->
+      <div class="grid grid-3" id="best-seller-list"></div>
+
+      <div style="text-align:center; margin-top:36px">
+        <a href="menu.html" class="btn btn-primary">Xem toàn bộ thực đơn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. GIỚI THIỆU NHÀ HÀNG ===== -->
+  <section class="section">
+    <div class="container about-block">
+      <div class="reveal">
+        <!-- Chưa có ảnh restaurant.jpg thì ảnh dự phòng sẽ tự hiện -->
+        <img src="images/restaurant/restaurant.jpg" alt="Không gian nhà hàng OCEAN SEAFOOD" onerror="handleImageError(this)">
+      </div>
+      <div class="reveal">
+        <h2>Câu chuyện thương hiệu</h2>
+        <p>
+          OCEAN SEAFOOD ra đời từ niềm đam mê với biển cả và mong muốn mang
+          những món hải sản tươi ngon nhất đến bàn ăn của mỗi gia đình Việt.
+        </p>
+        <p>
+          Chúng tôi chọn nguyên liệu từ các vùng biển nổi tiếng, vận chuyển trong
+          ngày và chế biến bởi đội ngũ đầu bếp giàu kinh nghiệm.
+        </p>
+        <ul style="margin-bottom:20px">
+          <li>✅ Hải sản tươi sống, nhập mới mỗi ngày</li>
+          <li>✅ Nguồn gốc rõ ràng, quy trình vệ sinh nghiêm ngặt</li>
+          <li>✅ Đội ngũ đầu bếp chuyên nghiệp</li>
+          <li>✅ Không gian sang trọng, phục vụ tận tâm</li>
+        </ul>
+        <a href="about.html" class="btn btn-outline-blue">Tìm hiểu thêm</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. ƯU ĐÃI ===== -->
+  <section class="section section-light">
+    <div class="container">
+      <h2 class="section-title reveal">Ưu đãi hấp dẫn</h2>
+      <p class="section-subtitle reveal">Nhập mã ở trang giỏ hàng để nhận ưu đãi.</p>
+
+      <div class="grid grid-3">
+        <div class="promo-card reveal">
+          <h3>Khách hàng mới</h3>
+          <p>Giảm 50.000đ cho đơn hàng đầu tiên từ 300.000đ.</p>
+          <span class="promo-code">WELCOME50</span>
+        </div>
+        <div class="promo-card reveal">
+          <h3>Giảm 10% toàn thực đơn</h3>
+          <p>Áp dụng cho mọi đơn hàng, không yêu cầu giá trị tối thiểu.</p>
+          <span class="promo-code">OCEAN10</span>
+        </div>
+        <div class="promo-card reveal">
+          <h3>Combo gia đình</h3>
+          <p>Giảm 100.000đ cho đơn từ 1.000.000đ. Thử ngay combo hải sản gia đình.</p>
+          <span class="promo-code">FAMILY100</span>
+          <div style="margin-top:14px">
+            <a href="product-detail.html?id=15" class="btn btn-gold btn-sm">Xem combo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. ĐÁNH GIÁ KHÁCH HÀNG ===== -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">Khách hàng nói gì về chúng tôi</h2>
+      <p class="section-subtitle reveal">Những chia sẻ chân thật từ thực khách đã dùng bữa tại nhà hàng.</p>
+
+      <div class="grid grid-3">
+        <div class="review-card reveal">
+          <div class="rating">★★★★★</div>
+          <p>"Hải sản rất tươi, tôm hùm nướng phô mai ngon tuyệt. Cả nhà mình ai cũng thích, nhất định sẽ quay lại."</p>
+          <div class="review-name">Nguyễn Minh Anh</div>
+        </div>
+        <div class="review-card reveal">
+          <div class="rating">★★★★★</div>
+          <p>"Không gian sang trọng, nhân viên nhiệt tình. Lẩu hải sản đặc biệt rất đáng tiền, nước dùng ngọt thanh."</p>
+          <div class="review-name">Trần Quốc Bảo</div>
+        </div>
+        <div class="review-card reveal">
+          <div class="rating">★★★★☆</div>
+          <p>"Đi du lịch ghé ăn thử và rất hài lòng. Cua hấp bia thơm ngon, lên món nhanh. Cuối tuần nên đặt bàn trước."</p>
+          <div class="review-name">Lê Thu Hà</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER: main.js sẽ tự đổ nội dung vào đây -->
+  <div id="site-footer"></div>
+
+  <!-- Nạp file JavaScript (products.js đã nạp ở head) -->
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/qr-widget.js"></script>
+  <script src="js/dark-mode.js"></script>
+  <script src="js/sound-fx.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/transition.js"></script>
+  <script src="js/drag-cart.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/dive-scroll.js"></script>
+  <script src="js/ocean-fx.js"></script>
+  <!-- Three.js (thư viện vẽ 3D) và cảnh biển riêng của trang chủ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/ocean3d.js"></script>
+ 
+  <!-- ===== JavaScript RIÊNG CỦA TRANG CHỦ ===== -->
+    <script>
+    /* ================= RẠN SAN HÔ ================= */
+
+        function renderReef() {
+      const bed = document.getElementById("reef-bed");
+      if (!bed) return;
+
+      const featured = CATEGORIES.filter(function (category) {
+        return category.id !== "tuoi-song" && category.id !== "do-uong";
+      });
+
+      bed.innerHTML = featured.map(function (category) {
+        const topDishes = PRODUCTS
+          .filter(function (p) { return p.category === category.id && p.inStock; })
+          .sort(function (a, b) { return b.rating - a.rating; })
+          .slice(0, 3);
+
+        const dishList = topDishes.map(function (p) {
+          return '<li><a href="product-detail.html?id=' + p.id + '">' + p.name + '</a></li>';
+        }).join("");
+
+        return `
+          <button type="button" class="reef-cluster reveal" data-reef="${category.id}">
+            <span class="reef-orb">
+              <span class="reef-orb-ring"></span>
+              <span class="reef-orb-glass"></span>
+              <span class="reef-icon">${category.icon}</span>
+            </span>
+            <span class="reef-label">${category.name}</span>
+
+            <span class="reef-popup">
+              <strong>${category.name}</strong>
+              <ul>${dishList || "<li>Đang cập nhật món</li>"}</ul>
+              <span class="reef-popup-link">Xem cả danh mục →</span>
+            </span>
+          </button>`;
+      }).join("");
+
+      bed.querySelectorAll(".reef-cluster").forEach(function (cluster) {
+        cluster.addEventListener("click", function () {
+          const isOpen = cluster.classList.contains("reef-open");
+
+          bed.querySelectorAll(".reef-cluster").forEach(function (c) {
+            c.classList.remove("reef-open");
+          });
+
+          if (isOpen) {
+            window.location.href = "menu.html?category=" + cluster.dataset.reef;
+          } else {
+            cluster.classList.add("reef-open");
+          }
+        });
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".reef-cluster")) {
+          bed.querySelectorAll(".reef-cluster").forEach(function (c) {
+            c.classList.remove("reef-open");
+          });
+        }
+      });
+
+      initReveal();
+    }
+
+    /* ================= MÓN ĂN BÁN CHẠY ================= */
+
+    function renderBestSellers() {
+      const container = document.getElementById("best-seller-list");
+      if (!container) return;
+
+      const bestSellers = PRODUCTS.filter(function (product) {
+        return product.bestSeller && product.inStock;
+      }).slice(0, 6);
+
+      container.innerHTML = bestSellers.map(createProductCard).join("");
+    }
+
+   /* ================= QUẢ CẦU MÓN ĂN 3D + VỆT SÁNG XANH DƯƠNG ================= */
+
+    function canAnimate3D() {
+      return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    var sphereNodes = [];
+    var sphereEdges = [];
+    var SPHERE_RADIUS = 175;
+    var PERSPECTIVE = 760;
+
+    // Vận tốc xoay mặc định & tương tác chuột
+    var rotVelX = 0.0012;
+    var rotVelY = 0.0045;
+    var targetVelX = 0.0012;
+    var targetVelY = 0.0045;
+    var isDragging = false;
+    var dragDistance = 0;
+    var lastPointer = { x: 0, y: 0 };
+    var focusNodeIndex = null;
+    var pulseTime = 0;
+
+    // Phân bố đều N điểm trên mặt cầu (Fibonacci Sphere) để các món cách đều nhau
+    function buildSpherePoints(count) {
+      var pts = [];
+      var goldenAngle = Math.PI * (3 - Math.sqrt(5));
+      for (var i = 0; i < count; i++) {
+        var y = count === 1 ? 0 : 1 - (i / (count - 1)) * 2;
+        var radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
+        var theta = goldenAngle * i;
+        pts.push({
+          x: Math.cos(theta) * radiusAtY,
+          y: y,
+          z: Math.sin(theta) * radiusAtY
+        });
+      }
+      return pts;
+    }
+
+    // Tìm 3 món lân cận gần nhất cho mỗi món để nối tia sáng xanh dương thành mạng lưới quả cầu
+    function buildNeighborEdges(pts) {
+      var edges = [];
+      var seen = {};
+      for (var i = 0; i < pts.length; i++) {
+        var dists = [];
+        for (var j = 0; j < pts.length; j++) {
+          if (i === j) continue;
+          var dx = pts[i].x - pts[j].x;
+          var dy = pts[i].y - pts[j].y;
+          var dz = pts[i].z - pts[j].z;
+          dists.push({ index: j, d: dx * dx + dy * dy + dz * dz });
+        }
+        dists.sort(function (a, b) { return a.d - b.d; });
+        for (var k = 0; k < Math.min(3, dists.length); k++) {
+          var a = Math.min(i, dists[k].index);
+          var b = Math.max(i, dists[k].index);
+          var key = a + "-" + b;
+          if (!seen[key]) {
+            seen[key] = true;
+            edges.push([a, b]);
+          }
+        }
+      }
+      return edges;
+    }
+
+    // Xoay điểm 3D trực tiếp theo trục màn hình -> không bị khóa góc (gimbal lock)
+    function rotatePoint3D(p, ax, ay) {
+      // Xoay ngang quanh trục Y
+      var cosY = Math.cos(ay), sinY = Math.sin(ay);
+      var x1 = p.x * cosY + p.z * sinY;
+      var z1 = -p.x * sinY + p.z * cosY;
+
+      // Xoay dọc quanh trục X
+      var cosX = Math.cos(ax), sinX = Math.sin(ax);
+      var y2 = p.y * cosX - z1 * sinX;
+      var z2 = p.y * sinX + z1 * cosX;
+
+      // Chuẩn hóa lại độ dài = 1 để tránh sai số tích lũy
+      var len = Math.sqrt(x1 * x1 + y2 * y2 + z2 * z2) || 1;
+      p.x = x1 / len;
+      p.y = y2 / len;
+      p.z = z2 / len;
+    }
+
+    function renderHero3D() {
+      var ring = document.getElementById("ring");
+      var dotsBox = document.getElementById("ring-dots");
+      if (!ring) return;
+
+      // Lấy TẤT CẢ món ăn đang có trong PRODUCTS
+      var dishes = PRODUCTS.filter(function (p) { return p.inStock !== false; });
+      if (!dishes.length) return;
+
+      var points = buildSpherePoints(dishes.length);
+      sphereEdges = buildNeighborEdges(points);
+
+      ring.innerHTML = dishes.map(function (product) {
+        return `
+          <a href="product-detail.html?id=${product.id}" class="ring-item" draggable="false" title="${product.name} - ${formatPrice(product.price)}">
+            <img src="${product.image}" alt="${product.name}" draggable="false" onerror="handleImageError(this)">
+            <span class="ring-price">${formatPrice(product.price)}</span>
+            <span class="ring-name">${product.name}</span>
+          </a>`;
+      }).join("");
+
+      var els = Array.from(ring.querySelectorAll(".ring-item"));
+      sphereNodes = els.map(function (el, i) {
+        return {
+          el: el,
+          dish: dishes[i],
+          x: points[i].x,
+          y: points[i].y,
+          z: points[i].z,
+          sx: 0,
+          sy: 0,
+          depthRatio: 0.5
+        };
+      });
+
+      // Chấm điều hướng cho các món bán chạy để bấm xoay thẳng món đó ra phía trước
+      if (dotsBox) {
+        var dotIndices = [];
+        sphereNodes.forEach(function (n, idx) {
+          if (n.dish.bestSeller && dotIndices.length < 6) dotIndices.push(idx);
+        });
+        dotsBox.innerHTML = dotIndices.map(function (idx, i) {
+          return '<button type="button" class="ring-dot' + (i === 0 ? " active" : "") + '" data-node="' + idx + '" aria-label="Xoay tới ' + sphereNodes[idx].dish.name + '"></button>';
+        }).join("");
+
+        dotsBox.querySelectorAll(".ring-dot").forEach(function (dot) {
+          dot.addEventListener("click", function () {
+            focusNodeIndex = Number(dot.dataset.node);
+            dotsBox.querySelectorAll(".ring-dot").forEach(function (d) { d.classList.remove("active"); });
+            dot.classList.add("active");
+          });
+        });
+      }
+    }
+
+    function drawSphereConnections() {
+      var canvas = document.getElementById("sphere-lines");
+      var stage = document.getElementById("ring-stage");
+      if (!canvas || !stage) return;
+
+      var w = stage.clientWidth;
+      var h = stage.clientHeight;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+      }
+
+      var ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      var cx = w / 2;
+      var cy = h / 2;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+
+      // 1. Vệt sáng xanh dương nối các món ăn lân cận trên bề mặt quả cầu
+      for (var e = 0; e < sphereEdges.length; e++) {
+        var n1 = sphereNodes[sphereEdges[e][0]];
+        var n2 = sphereNodes[sphereEdges[e][1]];
+        var avgDepth = (n1.depthRatio + n2.depthRatio) * 0.5;
+        var alpha = 0.08 + avgDepth * 0.34;
+
+        var x1 = cx + n1.sx, y1 = cy + n1.sy;
+        var x2 = cx + n2.sx, y2 = cy + n2.sy;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "rgba(56, 189, 248, " + alpha.toFixed(3) + ")";
+        ctx.lineWidth = 0.8 + avgDepth * 1.1;
+        ctx.stroke();
+      }
+
+      // 2. Vệt sáng xanh dương từ MỌI món ăn nối thẳng vào chính giữa quả cầu
+      for (var i = 0; i < sphereNodes.length; i++) {
+        var node = sphereNodes[i];
+        var nx = cx + node.sx;
+        var ny = cy + node.sy;
+        var lineAlpha = 0.14 + node.depthRatio * 0.48;
+
+        var grad = ctx.createLinearGradient(cx, cy, nx, ny);
+        grad.addColorStop(0, "rgba(186, 230, 253, " + (lineAlpha * 1.15).toFixed(3) + ")");
+        grad.addColorStop(0.55, "rgba(14, 165, 233, " + lineAlpha.toFixed(3) + ")");
+        grad.addColorStop(1, "rgba(56, 189, 248, " + (lineAlpha * 0.35).toFixed(3) + ")");
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(nx, ny);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1 + node.depthRatio * 1.4;
+        ctx.stroke();
+
+        // Hạt sáng chạy từ món ăn hướng vào lõi trung tâm
+        var flow = (pulseTime * 0.65 + i * 0.17) % 1;
+        var px = nx + (cx - nx) * flow;
+        var py = ny + (cy - ny) * flow;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.4 + node.depthRatio * 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(186, 230, 253, " + (0.25 + node.depthRatio * 0.6).toFixed(3) + ")";
+        ctx.fill();
+      }
+
+      // 3. Lõi sáng xanh dương ở chính giữa quả cầu
+      var corePulse = 1 + Math.sin(pulseTime * 2.5) * 0.12;
+      var coreGlow = ctx.createRadialGradient(cx, cy, 2, cx, cy, 34 * corePulse);
+      coreGlow.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      coreGlow.addColorStop(0.25, "rgba(125, 211, 252, 0.85)");
+      coreGlow.addColorStop(0.6, "rgba(14, 165, 233, 0.3)");
+      coreGlow.addColorStop(1, "rgba(14, 165, 233, 0)");
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 34 * corePulse, 0, Math.PI * 2);
+      ctx.fillStyle = coreGlow;
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function stepSphere() {
+      if (!sphereNodes.length) {
+        if (canAnimate3D()) requestAnimationFrame(stepSphere);
+        return;
+      }
+
+      if (!document.hidden) {
+        pulseTime += 0.025;
+
+        // Nếu người dùng bấm chấm tròn, xoay mượt món đó về chính diện
+        if (focusNodeIndex !== null && sphereNodes[focusNodeIndex]) {
+          var targetNode = sphereNodes[focusNodeIndex];
+          rotVelY = -targetNode.x * 0.09;
+          rotVelX = targetNode.y * 0.09;
+          if (targetNode.z > 0.985) {
+            focusNodeIndex = null;
+          }
+        } else if (!isDragging) {
+          rotVelX += (targetVelX - rotVelX) * 0.06;
+          rotVelY += (targetVelY - rotVelY) * 0.06;
+        }
+
+        for (var i = 0; i < sphereNodes.length; i++) {
+          var node = sphereNodes[i];
+          if (!isDragging) {
+            rotatePoint3D(node, rotVelX, rotVelY);
+          }
+
+          var zPos = node.z * SPHERE_RADIUS;
+          var persp = PERSPECTIVE / (PERSPECTIVE - zPos);
+          node.sx = node.x * SPHERE_RADIUS * persp;
+          node.sy = node.y * SPHERE_RADIUS * persp;
+          node.depthRatio = (node.z + 1) * 0.5; // 0 (sau cùng) -> 1 (trước nhất)
+
+          var scale = 0.56 + node.depthRatio * 0.56;
+          var opacity = 0.34 + node.depthRatio * 0.66;
+
+          node.el.style.transform =
+            "translate3d(" + node.sx.toFixed(1) + "px, " + node.sy.toFixed(1) + "px, 0) scale(" + scale.toFixed(3) + ")";
+          node.el.style.opacity = opacity.toFixed(2);
+          node.el.style.zIndex = Math.round(10 + node.depthRatio * 100);
+        }
+
+        drawSphereConnections();
+      }
+
+      if (canAnimate3D()) requestAnimationFrame(stepSphere);
+    }
+
+    function setupSphereMouseControl() {
+      var stage = document.getElementById("ring-stage");
+      var ring = document.getElementById("ring");
+      if (!stage) return;
+
+      // Rê chuột trên khung để điều hướng xoay nhẹ theo vị trí con trỏ
+      stage.addEventListener("pointermove", function (event) {
+        if (isDragging) {
+          var dx = event.clientX - lastPointer.x;
+          var dy = event.clientY - lastPointer.y;
+          dragDistance += Math.abs(dx) + Math.abs(dy);
+          lastPointer.x = event.clientX;
+          lastPointer.y = event.clientY;
+
+          var ay = dx * 0.0085;
+          var ax = -dy * 0.0085;
+          rotVelY = ay;
+          rotVelX = ax;
+          focusNodeIndex = null;
+
+          for (var i = 0; i < sphereNodes.length; i++) {
+            rotatePoint3D(sphereNodes[i], ax, ay);
+          }
+          return;
+        }
+
+        var box = stage.getBoundingClientRect();
+        var nx = (event.clientX - box.left) / box.width - 0.5;
+        var ny = (event.clientY - box.top) / box.height - 0.5;
+        targetVelY = nx * 0.024;
+        targetVelX = -ny * 0.018;
+      });
+
+      stage.addEventListener("pointerdown", function (event) {
+        isDragging = true;
+        dragDistance = 0;
+        focusNodeIndex = null;
+        lastPointer.x = event.clientX;
+        lastPointer.y = event.clientY;
+        stage.classList.add("is-dragging");
+      });
+
+      window.addEventListener("pointerup", function () {
+        if (!isDragging) return;
+        isDragging = false;
+        stage.classList.remove("is-dragging");
+      });
+
+      stage.addEventListener("pointerleave", function () {
+        if (!isDragging) {
+          targetVelX = 0.0012;
+          targetVelY = 0.0045;
+        }
+      });
+
+      // Chặn mở link món ăn nếu người dùng vừa kéo xoay quả cầu
+      if (ring) {
+        ring.addEventListener("click", function (event) {
+          if (dragDistance > 6) {
+            event.preventDefault();
+          }
+        });
+      }
+    }
+
+    /* ================= NGHIÊNG THẺ MÓN ĂN BÁN CHẠY ================= */
+
+    function setupCardTilt() {
+      if (!canAnimate3D() || !window.matchMedia("(hover: hover)").matches) return;
+
+      const list = document.getElementById("best-seller-list");
+      if (!list) return;
+
+      list.addEventListener("mousemove", function (event) {
+        const card = event.target.closest(".product-card");
+        if (!card) return;
+
+        const box = card.getBoundingClientRect();
+        const x = (event.clientX - box.left) / box.width - 0.5;
+        const y = (event.clientY - box.top) / box.height - 0.5;
+
+        card.style.transition = "transform 0.1s ease-out, box-shadow 0.3s";
+        card.style.transform =
+          "perspective(900px) rotateX(" + (-y * 10) + "deg) rotateY(" + (x * 10) + "deg) translateY(-6px)";
+      });
+
+      list.addEventListener("mouseout", function (event) {
+        const card = event.target.closest(".product-card");
+        if (card && !card.contains(event.relatedTarget)) {
+          card.style.transition = "";
+          card.style.transform = "";
+        }
+      });
+    }
+
+    /* ================= KHỞI ĐỘNG ================= */
+
+    document.addEventListener("DOMContentLoaded", function () {
+      renderReef();
+      renderBestSellers();
+      renderHero3D();
+      setupSphereMouseControl();
+      stepSphere();
+      setupCardTilt();
+    });
+  </script>

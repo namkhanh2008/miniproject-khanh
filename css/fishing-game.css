@@ -1,0 +1,560 @@
+/* =====================================================
+   OCEAN SEAFOOD - FILE: css/fishing-game.css
+   Giao diện Phòng chờ 2 cột:
+   - Trái: Bảng hiệu Top 5 cao thủ với đổ bóng đa tầng
+   - Phải: Mini-game câu cá săn ưu đãi
+   ===================================================== */
+
+/* ---------- Bố cục 2 cột Phòng chờ ---------- */
+.waiting-room-layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+/* ---------- BẢNG HIỆU TOP 5 BÊN TRÁI ---------- */
+.leaderboard-col {
+  position: sticky;
+  top: calc(var(--header-height) + 20px);
+}
+
+.leaderboard-signboard {
+  position: relative;
+  margin-top: 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f9fd 100%);
+  border: 2px solid rgba(201, 162, 39, 0.55);
+  overflow: visible;
+  /* Đổ bóng 3 lớp tạo độ nổi cho bảng hiệu mà không bị gắt */
+  box-shadow:
+    0 22px 44px -12px rgba(6, 47, 87, 0.28),
+    0 8px 18px -4px rgba(10, 77, 140, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Móc treo trang trí phía trên bảng hiệu */
+.signboard-hanger {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.signboard-nail {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffe699, #a67c14);
+  border: 2px solid #062f57;
+  box-shadow: 0 3px 6px rgba(6, 47, 87, 0.35);
+}
+
+.signboard-rope {
+  flex: 1;
+  height: 3px;
+  background: linear-gradient(90deg, #a67c14, #e6c65c, #a67c14);
+  margin: 0 2px;
+  border-radius: 2px;
+}
+
+/* Đầu bảng hiệu */
+.signboard-header {
+  padding: 20px 18px 16px;
+  text-align: center;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(135deg, #0a4d8c 0%, #062f57 100%);
+  color: var(--color-white);
+  border-bottom: 3px solid var(--color-gold);
+  box-shadow: inset 0 -6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.signboard-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: rgba(201, 162, 39, 0.22);
+  color: var(--color-gold-light);
+  border: 1px solid rgba(230, 198, 92, 0.45);
+  margin-bottom: 8px;
+}
+
+.signboard-header h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+  color: var(--color-white);
+  margin-bottom: 4px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.signboard-header p {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Danh sách Top 5 trên bảng hiệu */
+.signboard-body {
+  padding: 14px;
+}
+
+.signboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signboard-empty {
+  text-align: center;
+  padding: 20px 12px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 10px;
+}
+
+.signboard-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--color-white);
+  border: 1px solid #e2ecf5;
+  box-shadow: 0 3px 8px rgba(10, 77, 140, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signboard-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(10, 77, 140, 0.12);
+}
+
+.signboard-row.rank-1 {
+  background: linear-gradient(135deg, #fffaf0 0%, #fff2cc 100%);
+  border-color: rgba(201, 162, 39, 0.65);
+  box-shadow: 0 5px 14px rgba(201, 162, 39, 0.18);
+}
+
+.signboard-row.rank-2 {
+  background: linear-gradient(135deg, #f8fbff 0%, #edf4fb 100%);
+  border-color: #c2d4e6;
+}
+
+.signboard-row.rank-3 {
+  background: linear-gradient(135deg, #fff8f3 0%, #fcece1 100%);
+  border-color: #e6c5ae;
+}
+
+.signboard-rank {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.signboard-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.signboard-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.signboard-meta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+}
+
+.signboard-score {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.signboard-score strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+}
+
+.signboard-score small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+/* Khung ưu đãi đang giữ dưới bảng hiệu */
+.signboard-footer {
+  padding: 0 14px 16px;
+}
+
+.saved-reward-box {
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eef6fc 0%, #e1eef9 100%);
+  border: 1px solid rgba(10, 77, 140, 0.16);
+}
+
+.saved-reward-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.saved-reward-box p {
+  font-size: 0.84rem;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+/* ---------- THANH TRẠNG THÁI (HUD) ---------- */
+.game-hud {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #062f57 0%, #0a4d8c 100%);
+  border-radius: var(--radius);
+  color: var(--color-white);
+  box-shadow: 0 8px 20px rgba(6, 47, 87, 0.18);
+}
+
+.game-stat {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.game-stat-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 2px;
+}
+
+#game-score { color: var(--color-gold-light); }
+.stat-reward { color: #6ef3b3; }
+.stat-turtle { color: #ffd966; }
+
+/* ---------- KHU VỰC ĐẠI DƯƠNG ---------- */
+.game-ocean {
+  position: relative;
+  height: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1b7eb5 0%, #0a4d8c 48%, #04203b 100%);
+  box-shadow:
+    0 14px 30px rgba(6, 47, 87, 0.24),
+    inset 0 0 60px rgba(0, 0, 0, 0.35);
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+.game-ocean.ocean-shake {
+  animation: oceanShake 0.32s ease;
+}
+
+@keyframes oceanShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+}
+
+/* Gợn sóng khi bấm vào mặt nước */
+.water-tap-ripple {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  pointer-events: none;
+  animation: tapRipple 0.55s ease-out forwards;
+}
+
+@keyframes tapRipple {
+  from { transform: scale(0.5); opacity: 0.9; }
+  to   { transform: scale(4); opacity: 0; }
+}
+
+/* ---------- SINH VẬT BIỂN (tách lớp ngoài/trong để không lỗi lật) ---------- */
+.game-creature {
+  position: absolute;
+  user-select: none;
+  cursor: pointer;
+  padding: 6px; /* mở rộng vùng bấm cho dễ trúng hơn */
+  z-index: 3;
+}
+
+.creature-sprite {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+  transition: transform 0.12s ease;
+}
+
+.game-creature.game-flip .creature-sprite {
+  transform: scaleX(-1);
+}
+
+.game-creature:hover .creature-sprite {
+  transform: scale(1.16);
+}
+
+.game-creature.game-flip:hover .creature-sprite {
+  transform: scaleX(-1) scale(1.16);
+}
+
+/* Rùa biển đặc biệt: phát sáng vàng & bơi nhanh */
+.game-creature.is-turtle .creature-sprite {
+  filter: drop-shadow(0 0 12px rgba(255, 217, 102, 0.95));
+}
+
+.creature-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.creature-badge.badge-turtle {
+  background: linear-gradient(135deg, #ffd966, #c9a227);
+  color: #062f57;
+}
+
+.creature-badge.badge-jelly {
+  background: #d64545;
+  color: #fff;
+}
+
+.game-creature.game-caught {
+  pointer-events: none;
+  animation: creatureCaught 0.32s ease forwards;
+}
+
+@keyframes creatureCaught {
+  to { opacity: 0; margin-top: -22px; }
+}
+
+/* ---------- ĐIỂM BAY LÊN ---------- */
+.game-float-layer { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+
+.game-float-pop {
+  position: absolute;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #ffe27a;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  animation: floatPop 0.95s ease-out forwards;
+}
+
+.game-float-pop.game-float-bad { color: #ff8a7a; }
+.game-float-pop.game-float-turtle { color: #7dffbd; font-size: 1.18rem; }
+
+@keyframes floatPop {
+  from { transform: translateY(0) scale(0.95); opacity: 1; }
+  to   { transform: translateY(-54px) scale(1.08); opacity: 0; }
+}
+
+/* ---------- MÀN HÌNH PHỦ BẮT ĐẦU / KẾT THÚC ---------- */
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(4, 30, 56, 0.9);
+  backdrop-filter: blur(4px);
+  color: var(--color-white);
+}
+
+.game-overlay h2 {
+  color: var(--color-white);
+  font-size: 1.75rem;
+}
+
+.game-overlay p {
+  max-width: 470px;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.65;
+}
+
+.reward-highlight { color: #6ef3b3; font-size: 1.15rem; }
+.game-new-best { color: var(--color-gold-light); font-weight: 700; }
+
+.game-name-box {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(230, 198, 92, 0.35);
+}
+
+.game-name-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.game-name-form input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a2836;
+  font-family: inherit;
+  min-width: 190px;
+}
+
+.game-end-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* ---------- CHÚ GIẢI SINH VẬT ---------- */
+.game-legend {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.game-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.82rem;
+}
+
+.game-legend-item .legend-emoji { font-size: 1.2rem; }
+.game-legend-item .legend-points {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+.game-legend-item.legend-bad .legend-points { color: var(--color-danger); }
+.game-legend-item.legend-turtle {
+  border-color: rgba(201, 162, 39, 0.65);
+  background: #fffbef;
+}
+.game-legend-item.legend-turtle .legend-points { color: #b58911; }
+
+/* ---------- HỖ TRỢ DARK MODE ---------- */
+body.theme-dark .leaderboard-signboard {
+  background: linear-gradient(180deg, #162430 0%, #101b24 100%);
+  border-color: rgba(201, 162, 39, 0.45);
+  box-shadow:
+    0 22px 44px -10px rgba(0, 0, 0, 0.65),
+    0 8px 18px rgba(0, 0, 0, 0.4);
+}
+body.theme-dark .signboard-row {
+  background: #1b2b39;
+  border-color: #2c4052;
+}
+body.theme-dark .signboard-row.rank-1 {
+  background: linear-gradient(135deg, #2b2719 0%, #3a321a 100%);
+  border-color: rgba(230, 198, 92, 0.5);
+}
+body.theme-dark .signboard-row.rank-2 {
+  background: linear-gradient(135deg, #1d2d3c 0%, #243647 100%);
+}
+body.theme-dark .signboard-row.rank-3 {
+  background: linear-gradient(135deg, #2b2320 0%, #352a25 100%);
+}
+body.theme-dark .signboard-score strong { color: var(--color-gold-light); }
+body.theme-dark .saved-reward-box {
+  background: #1a2a38;
+  border-color: #2b3f52;
+}
+body.theme-dark .saved-reward-title { color: var(--color-gold-light); }
+body.theme-dark .game-legend-item {
+  background-color: var(--surface-color);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+body.theme-dark .game-legend-item .legend-points { color: #6fb5ff; }
+body.theme-dark .game-legend-item.legend-turtle {
+  background: #2b2618;
+  border-color: rgba(230, 198, 92, 0.5);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 960px) {
+  .waiting-room-layout {
+    grid-template-columns: 1fr;
+  }
+  .leaderboard-col {
+    position: static;
+    order: 2; /* trên màn hình nhỏ đưa sân chơi lên trước, bảng hiệu xuống ngay dưới */
+  }
+  .game-col { order: 1; }
+}
+
+@media (max-width: 768px) {
+  .game-ocean { height: 370px; }
+  .game-hud {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .game-legend { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .game-hud { grid-template-columns: repeat(2, 1fr); }
+  .game-legend { grid-template-columns: 1fr; }
+}
